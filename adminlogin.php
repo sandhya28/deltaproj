@@ -15,7 +15,7 @@ if(isset($_POST['submit']))
 	$username = $_POST['Name'];
 	$password = sha1($_POST['loginpass']);
 	
-	$result = mysql_query("SELECT * FROM stallstop WHERE password =\"$password\" AND username = \"$username\" ")or die(mysql_error());
+	$result = mysql_query("SELECT * FROM stallstopadmin WHERE password =\"$password\" AND username = \"$username\" ")or die(mysql_error());
 					
 				$count = mysql_num_rows($result);
 					
@@ -24,14 +24,14 @@ if(isset($_POST['submit']))
 					session_start();
 					$_SESSION['username'] = $username;
 					$_SESSION['password'] = $password;
-					$_SESSION['usertype'] = "public";
+					$_SESSION['usertype'] = "admin";
 					echo "<script>alert('Login Successful');document.location='stallstop.php';</script>";
 					
 				}
 
 				else 
 				{
-					echo "<script>alert('User Name and Password didnt match');document.location='loginpage.php';</script>";
+					echo "<script>alert('User Name and Password didnt match');document.location='adminlogin.php';</script>";
 				}
 }
 ?>
@@ -56,6 +56,7 @@ if(isset($_POST['submit']))
 		{
 			background: transparent;
 			color: #002200;
+
 		}
 		#log
 		{
@@ -87,9 +88,8 @@ if(isset($_POST['submit']))
         			<li><a href="menswear.php?wear=menswear">MEN'S CORNER</a></li>
 			        <li><a href="menswear.php?wear=womenswear">WOMEN'S CORNER</a></li>
         			<li><a href="menswear.php?wear=kidswear">KIDS CORNER</a></li>
-
-        			<li><a href="signuppage.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        			<li><a href="loginpage.php" class="activemem"><span class="glyphicon glyphicon-log-in"></span> Public Login</a></li>
+        			
+        			<li><a href="adminlogin.php" class="activemem"><span class="glyphicon glyphicon-log-in"></span> Admin Login</a></li>
       			</ul>
     		</div>
   		</div>
@@ -98,7 +98,7 @@ if(isset($_POST['submit']))
 <h1 id="log">LOGIN</h1>
 <div id="login_page">
 
-<form action="loginpage.php" method = "post" role="form">
+<form action="adminlogin.php" method = "post" role="form">
 	
 	<br><input type="text" name="Name" placeholder="Username" required class="form-control">
 		<br><input type="password" name="loginpass" placeholder="Password" required class="form-control"><br>

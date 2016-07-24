@@ -5,6 +5,7 @@
     
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
+    $typeofuser = $_SESSION['usertype'];
   }
 
   if (isset($_GET['logout'])) 
@@ -55,9 +56,10 @@ body
     		<div class="collapse navbar-collapse" id="menubar">
       			<ul class="nav navbar-nav navbar-right">
               <li><a href="stallstop.php" class="activemem">HOME</a></li>
-        			<li><a href="menswear.php">MEN'S CORNER</a></li>
-			        <li><a href="menswear.php">WOMEN'S CORNER</a></li>
-        			<li><a href="menswear.php">KIDS CORNER</a></li>
+        			<li><a href="menswear.php?wear=menswear">MEN'S CORNER</a></li>
+			        <li><a href="menswear.php?wear=womenswear">WOMEN'S CORNER</a></li>
+        			<li><a href="menswear.php?wear=kidswear-boys">KIDS CORNER</a></li>
+
               <?php 
                 if(isset($_SESSION['username']))
                 {
@@ -67,14 +69,15 @@ body
                 }
                 else
                 {
-                  echo '<li><a href="signuppage.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li><li><a href="loginpage.php"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>';
+                  echo '<li><a href="signuppage.php"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li><li><a href="loginpage.php"><span class="glyphicon glyphicon-log-in"></span> Public Login</a></li>';
                 }
               ?>
                <?php 
                 if(isset($_SESSION['username']))
                 {
                   echo '<li><a href="display.php"><span class="glyphicon glyphicon-user"></span><strong> '.$username.'</strong></a></li>';
-                }?>
+                }
+                ?>
       			</ul>
     		</div>
   		</div>
@@ -90,7 +93,7 @@ body
 
   <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <a href="menswear.php"><img src="menshirtnature.jpg"></a>
+      <a href="menswear.php?wear=menswear"><img src="menshirtnature.jpg"></a>
       <div class="carousel-caption">
         <h3>Men's Collection</h3>
         
@@ -98,7 +101,7 @@ body
     </div>
 
     <div class="item">
-      <a href="kidswear.php"><img src="kids nature.jpg"></a>
+      <a href="menswear.php?wear=kidswear-boys"><img src="kids nature.jpg"></a>
       <div class="carousel-caption">
         <h3>Kids Wear</h3>
         
@@ -106,7 +109,7 @@ body
     </div>
 
     <div class="item">
-      <a href="womenswear.php"><img src="womennature.jpg"></a>
+      <a href="menswear.php?wear=womenswear"><img src="womennature.jpg"></a>
       <div class="carousel-caption">
         <h3>Women's Collection</h3>
         

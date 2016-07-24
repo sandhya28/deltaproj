@@ -55,10 +55,12 @@ body
     		<div class="collapse navbar-collapse" id="menubar">
       			<ul class="nav navbar-nav navbar-right">
       				<li><a href="stallstop.php">HOME</a></li>
-        			<li><a href="menswear.php">MEN'S CORNER</a></li>
-			        <li><a href="womenswear.php">WOMEN'S CORNER</a></li>
-        			<li><a href="kidswear.php">KIDS CORNER</a></li>
-        			<li><a href="signuppage.php" class="activemem"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+
+        			<li><a href="menswear.php?wear=menswear">MEN'S CORNER</a></li>
+			        <li><a href="menswear.php?wear=womenswear">WOMEN'S CORNER</a></li>
+        			<li><a href="menswear.php?wear=kidswear-boys">KIDS CORNER</a></li>
+
+          			<li><a href="signuppage.php" class="activemem"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
         			<li><a href="loginpage.php" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
       			</ul>
     		</div>
@@ -71,11 +73,6 @@ body
 
 	PROFILE PICTURE<br><input type="file" name="image" required oninvalid="setCustomValidity('Enter a valid file. Can\'t be left blank')"
 	 onchange="try{setCustomValidity('')}catch(e){}" class="form-control"><br>
-
-	USER TYPE<br><input type="radio" name="usertype" value="Admin" required 
-	oninvalid="setCustomValidity('Can\'t be left blank')" 
-	onchange="try{setCustomValidity('')}catch(e){}">Admin<br>
-			  <input type="radio" name="usertype" value="Public">Public<br><br>
 
 	FIRSTNAME<input type="text" name="firstname" required oninvalid="setCustomValidity('Can\'t be left blank')" 
 	onchange="try{setCustomValidity('')}catch(e){}" class="form-control"><br>

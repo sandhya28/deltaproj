@@ -11,6 +11,7 @@
     
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
+    $typeofuser = $_SESSION['usertype'];
   }
 
   if (isset($_GET['logout'])) 
@@ -25,18 +26,6 @@
   	{
   		echo "failed to connect with the server";
   	}
-    if(isset($_GET['type']))
-    {
-      if (($_GET['type'])=="men") {
-        echo "<script>";
-      }
-      if ($_GET['type']=="women") {
-        
-      }
-      if ($_GET['type']=="kids") {
-        
-      }
-    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -76,9 +65,10 @@
     		<div class="collapse navbar-collapse" id="menubar">
       			<ul class="nav navbar-nav navbar-right">
               <li><a href="stallstop.php" >HOME</a></li>
-        			<li><a href="#" class="activemem">MEN'S CORNER</a></li>
-			        <li><a href="#">WOMEN'S CORNER</a></li>
-        			<li><a href="#">KIDS CORNER</a></li>
+
+              <li><a href="menswear.php?wear=menswear" class="1">MEN'S CORNER</a></li>
+              <li><a href="menswear.php?wear=womenswear" class="2">WOMEN'S CORNER</a></li>
+              <li><a href="menswear.php?wear=kidswear-boys" class="3">KIDS CORNER</a></li>
  				<?php 
                 if(isset($_SESSION['username']))
                 {
@@ -166,28 +156,60 @@
 
 
 ?>
+<?php
+  if (isset($_GET['wear'])&&($_GET['wear']=="menswear")) {
+    echo "<script>
+            var url='';
+            $('li a').removeClass('activemem');
+            $('.1').addClass('activemem');
+            url='testjson.php?type=men';
+          </script>";
+  }
+
+  if (isset($_GET['wear'])&&($_GET['wear']=="womenswear")) {
+    echo "<script>
+            var url='';
+            $('li a').removeClass('activemem');
+            $('.2').addClass('activemem');
+            url='testjson.php?type=women';
+          </script>";
+  }
+
+  if (isset($_GET['wear'])&&($_GET['wear']=="kidswear-boys")) {
+    echo "<script>
+            var url='';
+            $('li a').removeClass('activemem');
+            $('.3').addClass('activemem');
+            url='testjson.php?type=kids';
+          </script>";
+  }
+
+
+?>
 <script type="text/javascript">
- 
- $("li a").click(function(){
-    $('li a').removeClass('activemem');
-    $(this).addClass('activemem');
-});
-var url="testjson.php?type=men";
+
 $.getJSON(url,function(data){
   
-$.each(data.men, function(i,user){            
+$.each(data, function(i,user){            
 console.log("success");
 
 if(i%3==0)
       {
        document.getElementById('jsonchk').innerHTML+= '<div class="row text-center">';
       }
-document.getElementById('jsonchk').innerHTML+='<div class="col-sm-4"><div class="thumbnail" onclick = "fun('+user['SNO']+')"><p align=\'center\'><img style\'display:block; width:200px;height:250px;\' id=\'base64image\'src="data:image/jpeg;base64,'+user['PIC']+'" id = "'+user['SNO']+'" ></p><p><strong><a>'+user['BRAND']+'</a></strong></p><p>'+user['DESCRIPTION']+'</p><p><strike>Rs.'+user['OLDPRICE']+'</strike><br>Rs.'+user['NEWPRICE']+'</p>';
-if(<?php echo isset($_SESSION['username'])?'true':'false'; ?>)
+
+console.log("successwriting");
+if(<?php echo (isset($_SESSION['username'])&&($typeofuser)=="public")?'true':'false'; ?>)
 {
-  document.getElementById('jsonchk').innerHTML+='<a href = "womenswear.php?idis=true&&no='+user['SNO']+'&&buynow=true"><button type="submit" class="btn btn-danger" name=\''+user['SNO']+' id = "confirmbuying"\'>BUY NOW</button></a>';
+  document.getElementById('jsonchk').innerHTML+='<div class="col-sm-4"><div class="thumbnail" onclick = "fun('+user['SNO']+')"><p align=\'center\'><img src="'+user['FILENAME']+'"></p><p><strong><a>'+user['BRAND']+'</a></strong></p><p>'+user['DESCRIPTION']+'</p><p><strike>Rs.'+user['OLDPRICE']+'</strike><br>Rs.'+user['NEWPRICE']+'</p><a href = "womenswear.php?idis=true&&no='+user['SNO']+'&&buynow=true"><button type="submit" class="btn btn-danger" name=\''+user['SNO']+' id = "confirmbuying"\'>BUY NOW</button></a></div></div>';
+ // document.getElementById('jsonchk').innerHTML+='<a href = "womenswear.php?idis=true&&no='+user['SNO']+'&&buynow=true"><button type="submit" class="btn btn-danger" name=\''+user['SNO']+' id = "confirmbuying"\'>BUY NOW</button></a></div></div>';
+  console.log("readsuccess");
 }
-    document.getElementById('jsonchk').innerHTML+='</div></div>';
+else
+{
+  document.getElementById('jsonchk').innerHTML+='<div class="col-sm-4"><div class="thumbnail" onclick = "fun('+user['SNO']+')"><p align=\'center\'><img src="'+user['FILENAME']+'"></p><p><strong><a>'+user['BRAND']+'</a></strong></p><p>'+user['DESCRIPTION']+'</p><p><strike>Rs.'+user['OLDPRICE']+'</strike><br>Rs.'+user['NEWPRICE']+'</p>';
+}
+    //document.getElementById('jsonchk').innerHTML+='</div></div>';
 if(i%3==0)
 {
   document.getElementById('jsonchk').innerHTML += '</div>';

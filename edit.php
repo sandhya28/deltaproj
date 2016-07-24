@@ -7,8 +7,10 @@
     if(!isset($_SESSION['username']))
   header('location:stallstop.php');
 else
-	{$username = $_SESSION['username'];
-	$password = $_SESSION['password'];
+	{
+    $username = $_SESSION['username'];
+	  $password = $_SESSION['password'];
+    $typeofuser = $_SESSION['usertype'];
 	}	
   	if(!$conn)
   	{
@@ -54,7 +56,7 @@ body
     {
       margin-right: 23%;
       margin-left: 23%;
-      font-family: "Comic Sans MS";
+      font-family: "Calibri";
       border: 1px solid black;
       font-size: 1.7vw;
       padding: 2vw;
@@ -82,9 +84,11 @@ body
     		<div class="collapse navbar-collapse" id="menubar">
       			<ul class="nav navbar-nav navbar-right">
               <li><a href="stallstop.php">HOME</a></li>
-        			<li><a href="menswear.php">MEN'S CORNER</a></li>
-			        <li><a href="womenswear.php">WOMEN'S CORNER</a></li>
-        			<li><a href="kidswear.php">KIDS CORNER</a></li>
+
+              <li><a href="menswear.php?wear=menswear">MEN'S CORNER</a></li>
+              <li><a href="menswear.php?wear=womenswear">WOMEN'S CORNER</a></li>
+              <li><a href="menswear.php?wear=kidswear">KIDS CORNER</a></li>
+
               <?php 
                 if(isset($_SESSION['username']))
                 {

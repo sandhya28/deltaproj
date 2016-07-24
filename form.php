@@ -9,6 +9,7 @@
   		session_start();
   		$username = $_SESSION['username'];
   		$password = $_SESSION['password'];
+  		$typeofuser = $_SESSION['usertype'];
   		
 
 		if ($_SERVER["REQUEST_METHOD"] == "POST") 

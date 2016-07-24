@@ -9,6 +9,7 @@ if(!isset($_SESSION['username']))
 
 	$username = $_SESSION['username'];
 	$password = $_SESSION['password'];
+  $typeofuser = $_SESSION['usertype'];
 
 
   	if(!$conn)
@@ -18,9 +19,10 @@ if(!isset($_SESSION['username']))
 
 if(isset($_SESSION['username']))
 {
-
+  if($typeofuser=="public")
 	$result = mysql_query("SELECT * FROM stallstop WHERE password =\"$password\" AND username = \"$username\" ")or die(mysql_error());
-					
+	else if($typeofuser=="admin")
+    $result = mysql_query("SELECT * FROM stallstopadmin WHERE password =\"$password\" AND username = \"$username\"") or die(mysql_error());
 					$count = mysql_num_rows($result);
 					
 				if($count == 1)
@@ -71,10 +73,11 @@ function test_input($data)
         
         if(isset($file))
         {
-          $image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
+          $image = (file_get_contents($_FILES['image']['tmp_name']));
           $file_name = addslashes($_FILES['image']['name']);
           $image_size = getimagesize($_FILES['image']['tmp_name']);
-
+          
+          
           if($image_size == FALSE)
           {
           
@@ -88,6 +91,14 @@ function test_input($data)
             echo "Enter a valid file";
           }
         }
+        $re = mysql_query("SELECT MAX(SNO) FROM stock");
+          $max = mysql_fetch_array($re);
+          echo "<script>alert(".($max['MAX(SNO)']+1).");</script>";
+          $maxm = $max['MAX(SNO)']+1;
+          file_put_contents('images\ '.$maxm.'.jpg', $image);
+          $imag = 'images/ '.($max['MAX(SNO)']+1).'.jpg';
+          echo "<script>alert(".$maxm.");</script>";
+
         mysql_query("INSERT INTO stock VALUES (
                     NULL,
                     '$type',
@@ -96,7 +107,7 @@ function test_input($data)
                     '$description',
                     '$oldprice',
                     '$newprice',
-                    '$image'
+                    '$imag'
                     )")or die(mysql_error()) ;
       }
 
@@ -117,7 +128,7 @@ body
 {
   background-color: #ffeccc;
 }
-#adminonly
+#adminonlyadd
 {
     background:  #ffb833;
     color: black;
@@ -151,9 +162,11 @@ input[type="file"]
     		<div class="collapse navbar-collapse" id="menubar">
       			<ul class="nav navbar-nav navbar-right">
               <li><a href="stallstop.php">HOME</a></li>
-        			<li><a href="menswear.php">MEN'S CORNER</a></li>
-			        <li><a href="womenswear.php">WOMEN'S CORNER</a></li>
-        			<li><a href="kidswear.php">KIDS CORNER</a></li>
+
+              <li><a href="menswear.php?wear=menswear">MEN'S CORNER</a></li>
+              <li><a href="menswear.php?wear=womenswear">WOMEN'S CORNER</a></li>
+              <li><a href="menswear.php?wear=kidswear-boys">KIDS CORNER</a></li>
+
               <?php 
                 if(isset($_SESSION['username']))
                 {
@@ -171,6 +184,9 @@ input[type="file"]
                 {
                 	echo '<li><a href="display.php" class="activemem"><span class="glyphicon glyphicon-user" ></span><strong> '.$username.'</strong></a></li>';
                   echo '<li><a href="edit.php"><span class="glyphicon glyphicon-user"></span>Edit Details</a></li>';
+                      if(isset($_SESSION['username'])&&$typeofuser=="public")
+  echo '<li><a href = "cartcontents.php"><span class="glyphicon glyphicon-shopping-cart"></span> View Cart</a></li>';
+ 
                 }
                 ?>
       			</ul>
@@ -178,6 +194,7 @@ input[type="file"]
   		</div>
   	</nav>
 
+   
 <div id=user_login>
 	
 	<p>
@@ -200,9 +217,12 @@ input[type="file"]
       if($user['USERTYPE']=="Admin")
           {
             echo '<button type="button" id ="add" class="btn btn-success">ADD ITEMS</button>
-            <button type="button" id ="edit" class="btn btn-danger">DELETE</button>
             <br><br>'; 
           }      
+      if ($user['USERTYPE']=="Public") 
+      {
+        //$que = mysql_query("SELECT * FROM myorder WHERE USERNAME = '$user['username']'") or die(mysql_error());
+      }
   ?>
   <div id = "adminonlyadd">
   <div class="form-group">
@@ -223,7 +243,7 @@ input[type="file"]
 <script type="text/javascript">
 $('#adminonlyadd').hide();
   $('#add').click(function(){
-    $('#adminonly').show();
+    $('#adminonlyadd').show();
   });
 </script>
 </body>

@@ -17,6 +17,7 @@
 			$email = test_input($_POST['email']);
 			$address = test_input($_POST['address']);
 			$phoneno = test_input($_POST['phoneno']);
+			$usertype = "Public";
  		}
 		function test_input($data) 
 		{
@@ -24,7 +25,7 @@
   			$data = stripslashes($data);
 
   			$data = htmlspecialchars($data);
-  				$data = mysql_real_escape_string($data);
+  			$data = mysql_real_escape_string($data);
   			return $data;
   		}
 
@@ -72,7 +73,7 @@
 			}
 			else
 			{	
-				$result = mysql_query("SELECT * FROM stallstop WHERE username = \"$username\"")or die(mysql_error());
+				$result = mysql_query("SELECT * FROM stallstop WHERE username = \"$username\"");//or die(mysql_error());
 					
 					$count = mysql_num_rows($result);
 					
@@ -86,7 +87,7 @@
 				} 
 				else 
 				{
-					$result = mysql_query("SELECT * FROM stallstop WHERE email = \"$email\"")or die(mysql_error());
+					$result = mysql_query("SELECT * FROM stallstop WHERE email = \"$email\"");//or die(mysql_error());
 					
 					$count = mysql_num_rows($result);
 					
@@ -100,7 +101,7 @@
 					} 
     				else
 					{	
-						$result = mysql_query("SELECT * FROM stallstop WHERE phoneno = \"$phoneno\"")or die(mysql_error());
+						$result = mysql_query("SELECT * FROM stallstop WHERE phoneno = \"$phoneno\"");//or die(mysql_error());
 						
 						$count = mysql_num_rows($result);
 						
@@ -114,8 +115,9 @@
 						} 
 						else
 						{	
-							mysql_query(" INSERT INTO stallstop 
+							mysql_query(" INSERT INTO stallstop
 							VALUES (NULL,
+									'$usertype',
 									'$firstname',
 									'$lastname',
 									'$username',
